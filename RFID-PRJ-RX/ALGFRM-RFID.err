@@ -1,0 +1,5 @@
+>>> Warning 202 "C:\Users\SCANAN\Desktop\HOBÝ\!!!!!!!!!!!!!!!!!!!!!!!!ALGIFARM\ALGIFARM PRJ\RFID-PRJ-RX\ALGFRM-RFID.h" Line 148(15,18): Variable never used:   sec
+>>> Warning 202 "ALGFRM-RFID.c" Line 282(18,24): Variable never used:   tmpbcd
+      Memory usage:   ROM=22%      RAM=15% - 17%
+      0 Errors,  2 Warnings.
+Build Successful.

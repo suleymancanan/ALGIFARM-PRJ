@@ -1,0 +1,164 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004     @INTERRUPT_AREA
+005     @INTERRUPT_AREA
+006     @INTERRUPT_AREA
+007     @INTERRUPT_AREA
+008     @INTERRUPT_AREA
+009     @INTERRUPT_AREA
+00A     @INTERRUPT_AREA
+00B     @INTERRUPT_AREA
+00C     @INTERRUPT_AREA
+00D     @INTERRUPT_AREA
+00E     @INTERRUPT_AREA
+00F     @INTERRUPT_AREA
+010     @INTERRUPT_AREA
+011     @INTERRUPT_AREA
+012     @INTERRUPT_AREA
+013     @INTERRUPT_AREA
+014     @INTERRUPT_AREA
+015     @INTERRUPT_AREA
+016     @INTERRUPT_AREA
+017     @INTERRUPT_AREA
+018     @INTERRUPT_AREA
+019     rs232_errors
+01A-01D data
+01A     RCREG
+01E     channel
+01F     idH
+020     idL
+021     chXORcod
+022-032 RFIDmsg
+033.0   msgrdy
+033.1   txmode
+033.2   lcd_backlight
+034     databit
+034.7   tempdatabit
+035-043 TXBuffer
+044-052 RXBuffer
+053-055 nrfaddress
+056-063 config_setup
+064     ShiftReg
+064.0   ShiftRegLSB
+065-066 cpucounter
+067     sec
+068     address
+069     lcd_gotoxy.data
+06A     RDA_isr.data
+06B     RDA_isr.cc
+06C-06D MAIN.i
+06E     MAIN.tmpbcd
+06F     init_nrf24.i
+06F     set_CHID.@SCRATCH1
+06F     MAIN.@SCRATCH1
+06F     @PSTRINGC_212.@SCRATCH1
+070     init_nrf24.j
+070     @delay_us1.P1
+070     MAIN.@SCRATCH2
+070     @PSTRINGC_212.@SCRATCH2
+071     init_nrf24.temp
+071     LCD_PUTC.in_data
+071.7   init_nrf24.tempbit
+072-07F init_nrf24.config_setup
+072     LCD_PUTC.data
+073     lcd_gotoxy.x
+074     lcd_gotoxy.y
+075     lcd_send_byte.data
+076     i2c_send_nibble.data
+076     lcd_send_byte.@SCRATCH1
+077     @I2C_WRITE_1.P1
+080     @delay_ms1.P1
+080     init_nrf24.@SCRATCH1
+081     EXT_isr.c
+081     RDA_isr.@SCRATCH1
+082     EXT_isr.d
+082     RDA_isr.@SCRATCH2
+083     EXT_isr.@SCRATCH1
+084     EXT_isr.@SCRATCH2
+F80-F86 IOpin
+F83     PSP_DATA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FB8     CCP_3_LOW
+FB8     CCP_3
+FB9     CCP_3_HIGH
+FBB     CCP_2_LOW
+FBB     CCP_2
+FBC     CCP_2_HIGH
+FBE     CCP_1_LOW
+FBE     CCP_1
+FBF     CCP_1_HIGH
+FE1-FE2 @WRITE_PACKED_MEMORY.P1
+FE1-FE2 @READ_PACKED_MEMORY.P2
+FE9-FEA @READ_PROGRAM_MEMORY.P1
+FE9-FEA @WRITE_PROGRAM_MEMORY.P2
+FE9-FEA @READ_PACKED_MEMORY.P3
+FE9-FEA @WRITE_PACKED_MEMORY.P4
+FF6-FF8 @READ_PROGRAM_MEMORY.P1
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+022A  @delay_ms1
+046E  @delay_us1
+00C6  @GETCH_BIU_1
+0250  @I2C_WRITE_1
+02A0  i2c_send_nibble
+02F6  lcd_send_byte
+0318  lcd_clear
+032A  lcd_init
+0386  lcd_gotoxy
+03DE  LCD_PUTC
+048C  init_nrf24
+1B02  set_CHID
+00DE  RDA_isr
+0108  TIMER0_isr
+0140  EXT_isr
+01A8  init_prog
+0522  MAIN
+019C  @const245
+044E  @PSTRINGC_212
+01A4  @const247
+0522  @cinit1
+0576  @cinit2
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    C:\Users\SCANAN\Desktop\HOBÝ\!!!!!!!!!!!!!!!!!!!!!!!!ALGIFARM\ALGIFARM PRJ\RFID-PRJ-RX\
+
+Project Files:
+    ALGFRM-RFID.c                                           [03-Aðu-15 18:20  CRC=A30C7358]
+    ALGFRM-RFID.h                                           [03-Aðu-15 15:57  CRC=B33AA9B9]
+    ..\..\..\..\PICC4.135\devices\18F6310.h                 [16-Tem-12 14:22  CRC=3C680C9F]
+    ALGFRM-i2c_Flex_LCD.c                                   [01-Tem-15 18:02  CRC=CD4AB2D1]
+    ALGFRM-nrf2401.c                                        [03-Aðu-15 16:07  CRC=6E7E7590]
+
+Source signature=3CF6C7A1
+
+Units:
+    ALGFRM-RFID (main)
+
+Compiler Settings:
+    Processor:      PIC18F6310
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      ALGFRM-RFID.err
+    Ext Symbols: ALGFRM-RFID.esym
+    INHX32:      ALGFRM-RFID.hex
+    Symbols:     ALGFRM-RFID.sym
+    List:        ALGFRM-RFID.lst
+    Debug/COFF:  ALGFRM-RFID.cof
+    Project:     ALGFRM-RFID.PJT
+    Call Tree:   ALGFRM-RFID.tre
+    Statistics:  ALGFRM-RFID.STA
