@@ -129,10 +129,10 @@ struct timer {
              };
              
 #define ADDRESSSIZE 3
-#define PAYLOADSIZE 15           
+#define PAYLOADSIZE 16           
 unsigned char channel;
 unsigned char idH,idL,chXORcod;
-unsigned char RFIDmsg[17];
+unsigned char RFIDmsg[17],RFIDmsg_[17];
 short msgrdy,txmode=1;
 unsigned char databit;
 #bit tempdatabit=databit.7

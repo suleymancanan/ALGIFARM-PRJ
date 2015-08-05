@@ -172,10 +172,11 @@ IOpin.modulepower=1; //Yükselteciyi aktive et
 delay_us(5);
 IOpin.moduleDATA=0;
 IOpin.moduleCE=0; // Veri iletimine baþla
-delay_us(800);
+delay_us(2200);
 IOpin.modulepower=0;// Yükselticiyi kapat
 IOpin.modulePWRUP=0;
 delay_us(13000);
+//delay_ms(100);
 }
 
 //==============================================================================
@@ -259,13 +260,6 @@ output_g(0x00);
    
 }
 
-void clear_usart_receiver(void)
-{ 
-char c; 
-c = RCREG; 
-c = RCREG; 
-c = RCREG; 
-}
 void get_date_time(void)
 {
 getTime(hr, min, s, am_pm, hr_format);
@@ -310,13 +304,13 @@ for(i=0;i<16;i++)
    
    get_date_time();
    show_parameters();
+   set_CHID();
    init_nrf24();
    enable_interrupts(GLOBAL);
   
   for(;;)
    {
       //lcd_backlight=ON;
-      
       if(msgrdy)
       {
          lcd_backlight=ON;
@@ -343,50 +337,80 @@ for(i=0;i<16;i++)
          delay_ms(1000);
          lcd_gotoxy(1,2);
          lcd_putc('\f');
-          
           get_date_time();
-               for(i=0;i<16;i++) RFIDmsg[i]-=48;
-               
+          
+          for(i=0;i<10;i++) RFIDmsg_[i]=RFIDmsg[i]-48;
                TXBuffer[0]=0;
                TXBuffer[1]=hr;
                TXBuffer[2]=min;
                TXBuffer[3]=dt;
                TXBuffer[4]=mt;
                TXBuffer[5]=yr;
-               TXBuffer[6]=RFIDmsg[0];// country code
-               TXBuffer[7]=RFIDmsg[1];// country code
-               TXBuffer[8]=RFIDmsg[2];// country code
+               TXBuffer[6]=RFIDmsg_[0];// country code
+               TXBuffer[7]=RFIDmsg_[1];// country code
+               TXBuffer[8]=RFIDmsg_[2];// country code
                
-               tmpbcd=RFIDmsg[4]<<4||RFIDmsg[5];
+               TXBUffer[9]=RFIDmsg_[4];
+               TXBuffer[10]=RFIDmsg_[5];
+               TXBuffer[11]=RFIDmsg_[6];
+               TXBuffer[12]=RFIDmsg_[7];
+               TXBuffer[13]=RFIDmsg_[8];
+               TXBuffer[15]=RFIDmsg_[9];
+               lcd_putc('\f');
+              
+              lcd_gotoxy(1,2);
+              printf(lcd_putc,"%d",RFIDmsg_[9]);
+              
+              
+              /*
+              for(i=0;i<10;i++)
+         {
+            lcd_gotoxy(1+i,2);
+            
+            if(i!=3)
+               printf(lcd_putc,"%d",RFIDmsg_[i]);
+            else
+               printf(lcd_putc,"%c",RFIDmsg[i]);
+         }*/
+         delay_ms(2000);
+               /*
+               tmpbcd=(RFIDmsg[4]<<4)||RFIDmsg[5];
                TXBuffer[9]=tmpbcd;//ID
                
-               tmpbcd=RFIDmsg[6]<<4||RFIDmsg[7];
+               tmpbcd=(RFIDmsg[6]<<4)||RFIDmsg[7];
                TXBuffer[10]=tmpbcd;
                
-               tmpbcd=RFIDmsg[8]<<4||RFIDmsg[9];
+               tmpbcd=(RFIDmsg[8]<<4)||RFIDmsg[9];
                TXBuffer[11]=tmpbcd;
                
-               tmpbcd=RFIDmsg[10]<<4||RFIDmsg[11];
+               tmpbcd=(RFIDmsg[10]<<4)||RFIDmsg[11];
                TXBuffer[12]=tmpbcd;
                
-               tmpbcd=RFIDmsg[12]<<4||RFIDmsg[13];
+               tmpbcd=(RFIDmsg[12]<<4)||RFIDmsg[13];
                TXBuffer[13]=tmpbcd;
                
-               tmpbcd=RFIDmsg[14]<<4||RFIDmsg[15];
+               tmpbcd=(RFIDmsg[14]<<4)||RFIDmsg[15];
                TXBuffer[14]=tmpbcd;
+               */
                transmit_data();
                msgrdy=0;
-               
-               
 }
-               
                get_date_time();
                
                if(s!=sec)
+               {
                show_parameters();
                delay_ms(2000);
+               }
+               
                lcd_backlight=OFF;
+               /*
+               for(i=0;i<PAYLOADSIZE;i++)
+               TXBuffer[i]=i;
+               transmit_data();
+               */
          
    }
+   
    
 }   

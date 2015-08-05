@@ -1,3 +1,4 @@
-      Memory usage:   ROM=67%      RAM=16% - 20%
-      0 Errors,  0 Warnings.
+>>> Warning 202 "ALGFRM-RFID.c" Line 273(18,24): Variable never used:   tmpbcd
+      Memory usage:   ROM=68%      RAM=18% - 23%
+      0 Errors,  1 Warnings.
 Build Successful.

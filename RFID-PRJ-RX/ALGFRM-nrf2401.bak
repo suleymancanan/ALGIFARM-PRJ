@@ -100,14 +100,11 @@ IOpin.moduleCS=1;
     IOpin.moduleCE=0;
     IOpin.moduleCS=0;
  
-    if(!txmode)
-    {
     //Alýcýnýn Konfigürasyon ayarlarýndan sonra RX_DATA giriþ olarak tanýmla
     set_tris_c (0x82); 
     //Havayý dinlemeye baþla
     IOpin.moduleCE=1;
     IOpin.moduleCS=0;
-    }
     
 }
 //******************************************************************************

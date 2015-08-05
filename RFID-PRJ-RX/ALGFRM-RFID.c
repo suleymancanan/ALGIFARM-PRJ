@@ -1,3 +1,8 @@
+//RX
+//==============================================================================
+
+//==============================================================================
+
 #include <ALGFRM-RFID.h>
 #include <ALGFRM-i2c_Flex_LCD.c>
 //#include <ALGFRM-DS3231.c>
@@ -13,7 +18,7 @@
 #use fast_io(F)             
 #use fast_io(G)
 
-void clear_usart_receiver();
+//void clear_usart_receiver();
 /*                           
 unsigned char s = 00;                    
 unsigned char min =26;              
@@ -31,7 +36,7 @@ short am_pm = 1;
 void set_CHID(void)
 {
    channel=0x50; 
-   idH=0xAA;
+   idH=0xAA;//43605
    idL=0x55;
 
 chXORcod=(idH^idL)^channel;
@@ -78,7 +83,8 @@ clear_interrupt(int_timer0);
 void EXT_isr(void)                                
 { 
 unsigned int8 c,d;
-
+char ShiftReg;
+#bit ShiftRegLSB=ShiftReg.0
 set_tris_c(0x82);// RX modul DATA için giriþ yap
 IOpin.moduleCLK=0;
 //resetcounter=0;
@@ -109,9 +115,8 @@ IOpin.comled^=1;
 clear_interrupt(int_ext2);
 }
 
-
 //==============================================================================
-
+/*
 unsigned int16 calculate_crc16(unsigned int16 old_crc, unsigned int8 data)
 { 
 unsigned int16 crc16bit;
@@ -122,19 +127,21 @@ x ^= x>>4;
 crc16bit = (old_crc << 8) ^ (x << 12) ^ (x <<5) ^ x; 
 return crc16bit; 
 }
+*/
 
 //==============================================================================
-
 void transmit_data(void)
 {
 int8 a,b;
+unsigned char databit;
+#bit tempdatabit=databit.7
 
 iopin.modulePWRUP=1;
 
 delay_ms(3);
 
 IOpin.moduleCE=1;//
-IOpin.moduleCS=0;//TXRX Aktif nrf24'e veri yüklenebilir
+IOpin.moduleCS=0;//RX Aktif nrf24'e veri yüklenebilir
 
 delay_us(5);
 
@@ -172,7 +179,7 @@ IOpin.modulepower=1; //Yükselteciyi aktive et
 delay_us(5);
 IOpin.moduleDATA=0;
 IOpin.moduleCE=0; // Veri iletimine baþla
-delay_us(800);
+delay_us(1000);
 IOpin.modulepower=0;// Yükselticiyi kapat
 IOpin.modulePWRUP=0;
 delay_us(13000);
@@ -182,43 +189,7 @@ delay_us(13000);
 /*
 void show_parameters()
 { 
-            sec=s;
-            lcd_gotoxy(6,1);
-            lcd_putc("DS3231 RTC");              
-            lcd_gotoxy(1,3);                                
-            printf(lcd_putc, "Date: %02u/%02u/%02u ", dt, mt, yr); 
-            //showDay(dy, 16, 3); 
             
-            lcd_gotoxy(1,4);
-            printf(lcd_putc, "Temp: %2.2g'C ", getTemp());          
-            
-            lcd_gotoxy(1,2);
-            switch(hr_format) 
-            {                                  
-                     case 1: 
-                     {  
-                              switch(am_pm) 
-                              { 
-                                       case 1: 
-                                       { 
-                                                printf(lcd_putc, "Time: %02u:%02u:%02u PM ", hr, min, s);    
-                                                break;    
-                                       }                                                                        
-                                       default: 
-                                       {              
-                                                printf(lcd_putc, "Time: %02u:%02u:%02u AM ", hr, min, s);    
-                                                break;    
-                                       } 
-                              }      
-                              break; 
-                     }              
-                     default: 
-                     {          
-                              printf(lcd_putc, "Time: %02u:%02u:%02u     ", hr, min, s);    
-                              break;                                  
-                     }    
-            }
-         //delay_ms(600);
 } 
 */
 //------------------------------------------------------------------------------
@@ -253,46 +224,43 @@ output_e(0x00);
 output_f(0x00);
 output_g(0x00);
 // RF Modul and PA/LNA activation
- 
    IOpin.modulepower=0;
+   if(txmode)
+   {
    IOpin.moduleCTX=1;
    IOpin.moduleCPS=0;
+   }
+   else
+   {
+   IOpin.moduleCTX=0;
+   IOpin.moduleCPS=1;
+   
+   }
    IOpin.modulePWRUP=1;
    
 }
 
-void clear_usart_receiver(void)
-{ 
-char c; 
-c = RCREG; 
-c = RCREG; 
-c = RCREG; 
-}
-/*
-void get_date_time(void)
-{
-getTime(hr, min, s, am_pm, hr_format);
-              getDate(dy, dt, mt, yr);
-}
-*/
 //------------------------------------------------------------------------------
 void main(void)
 {
    unsigned int16 i;
    unsigned char tmpbcd;
+   txmode=0;
    init_prog();
-   delay_ms (100);
-   //DS3231_init(); 
+   delay_ms (1000);
    lcd_init (); 
-//clear_usart_receiver(); 
+
 EXT_INT_EDGE(2,L_TO_H);
-disable_interrupts(INT_EXT2);
+enable_interrupts(INT_EXT2);
 enable_interrupts(INT_TIMER0);
 enable_interrupts(INT_RDA);
 
 IOpin.buzzer=1;
 for(i=0;i<16;i++)
+{
    RFIDmsg[i]=' ';
+   RXBuffer[i]=0;
+}
    lcd_gotoxy(4,1);
    printf(lcd_putc,"ELFATEK");
    for(i=0;i<100;i++)
@@ -305,21 +273,26 @@ for(i=0;i<16;i++)
    //printf(lcd_putc,"ALGIFarm");
    delay_ms(1000);
    lcd_putc('\f');
-   //lcd_gotoxy(1,1);
-   //printf(lcd_putc,"ID:");
-   //setTime( hr,min,s,am_pm,hr_format);
-   //setDate(dy, dt, mt, yr);    
-   txmode=1;
    
-   //get_date_time();
+   
    //show_parameters();
+   set_CHID();
    init_nrf24();
    enable_interrupts(GLOBAL);
   
   for(;;)
    {
       //lcd_backlight=ON;
-      
+      for(i=1;i<6;i++)
+         printf("%d",RXBuffer[i]);
+         printf("\n\r");
+      for(i=6;i<16;i++)
+      if(i==9) printf("_%d",RXBuffer[i]);
+         else
+         printf("%d",RXBuffer[i]);
+         
+         printf("\n\r");
+      /*
       if(msgrdy)
       {
          lcd_backlight=ON;
@@ -347,9 +320,8 @@ for(i=0;i<16;i++)
          lcd_gotoxy(1,2);
          lcd_putc('\f');
           
-          //get_date_time();
-               /*
-               for(i=0;i<16;i++) RFIDmsg[i]-=48;
+               
+               for(i=6;i<16;i++) RFIDmsg[i]-=48;//nein
                
                TXBuffer[0]=0;
                TXBuffer[1]=hr;
@@ -380,17 +352,17 @@ for(i=0;i<16;i++)
                TXBuffer[14]=tmpbcd;
                transmit_data();
                msgrdy=0;
-               */
                
-}
                
-               //get_date_time();
+}*/
+              
                /*
                if(s!=sec)
                show_parameters();
                delay_ms(2000);
                */
                lcd_backlight=OFF;
+               //sleep();
          
    }
    

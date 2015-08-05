@@ -87,8 +87,8 @@ delay_us(5);
         }
     }
     //Konfigurasyon ayarlarý CS nin düþen kenarýnda aktif hale gelir
-    IOpin.moduleCE=0;
-    IOpin.moduleCS=0;
+    portCpin.TXCE=0;
+    portCpin.TXCS=0;
 }
 /****************************************************************************/
 

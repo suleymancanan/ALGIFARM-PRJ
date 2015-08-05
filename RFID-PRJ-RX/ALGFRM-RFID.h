@@ -129,21 +129,21 @@ struct timer {
              };
              
 #define ADDRESSSIZE 3
-#define PAYLOADSIZE 15           
+#define PAYLOADSIZE 16           
 unsigned char channel;
 unsigned char idH,idL,chXORcod;
 unsigned char RFIDmsg[17];
 short msgrdy,txmode=1;
-unsigned char databit;
-#bit tempdatabit=databit.7
+//unsigned char databit;
+//#bit tempdatabit=databit.7
 unsigned char TXBuffer[PAYLOADSIZE];
 unsigned char RXBuffer[PAYLOADSIZE];
 unsigned char nrfaddress[ADDRESSSIZE];
 unsigned int8 config_setup[14];
 //unsigned int16 emgcounter=0,signalledcounter=0,sleepcounter=0;
-char ShiftReg;
-#bit ShiftRegLSB=ShiftReg.0
-#byte RCREG = 0x1A //6310 da dresse bak
+//char ShiftReg;
+//#bit ShiftRegLSB=ShiftReg.0
+//#byte RCREG = 0x1A //6310 da dresse bak
 unsigned int16 cpucounter;
-unsigned char sec;
+//unsigned char sec;
 
